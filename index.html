@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Thanh toán - co3.site</title>
-  <meta name="description" content="QR Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em <3" />
+  <meta name="description" content="Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em" />
   <style>
     :root{
       --bg:#0f1724;
@@ -12,6 +12,7 @@
       --text:#e6eef8;
       --muted:#9fb0c8;
       --accent:#2dd4bf;
+      --red:#ef4444; /* đỏ đẹp, dễ đọc */
       --maxw:420px;
     }
     html,body{
@@ -41,14 +42,17 @@
     }
     .title{
       font-size:18px;
-      margin:0 0 18px;
+      margin:0 0 14px;
       color:var(--text);
       letter-spacing:0.2px;
     }
     .subtitle{
-      color:var(--muted);
-      font-size:13px;
       margin:0 0 18px;
+      font-size:14px;
+      color:var(--red);
+      font-weight:800;
+      letter-spacing:0.3px;
+      text-transform:uppercase;
     }
     .qr-wrap{
       display:flex;
@@ -71,16 +75,29 @@
     }
     .pay-name{
       margin-top:18px;
-      font-weight:700;
+      font-weight:800;
       font-size:16px;
-      color:var(--text);
-      letter-spacing:0.3px;
+      letter-spacing:0.4px;
       text-transform:uppercase;
     }
-    .small{
-      margin-top:6px;
+    .bank{
+      margin-top:10px;
+      font-weight:800;
+      color:var(--red);
+      letter-spacing:0.3px;
+    }
+    .acc-number{
+      margin-top:4px;
+      font-size:22px;
+      font-weight:900;
+      letter-spacing:0.5px;
+      color:#ffffff;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+    }
+    .hint{
+      margin-top:8px;
       color:var(--muted);
-      font-size:13px;
+      font-size:12px;
     }
     .actions{
       display:flex;
@@ -94,8 +111,8 @@
       border-radius:10px;
       border:0;
       cursor:pointer;
-      font-weight:600;
-      background:rgba(255,255,255,0.03);
+      font-weight:700;
+      background:rgba(255,255,255,0.06);
       color:var(--text);
       transition:all .15s ease;
       box-shadow: 0 2px 0 rgba(0,0,0,0.3) inset;
@@ -106,17 +123,22 @@
       color:#072126;
     }
     footer{
-      margin-top:18px;
-      color:var(--muted);
-      font-size:12px;
+      margin-top:20px;
+      font-size:18px;            /* ghi lớn theo yêu cầu */
+      font-weight:800;
+      color:#e9f0fb;
     }
     @media print{
       body{ background:white; color:black; }
       .card{ box-shadow:none; border:none; }
-      footer, .subtitle, .actions, .title{ display:none; }
+      .actions, .title{ display:none; }
+      .subtitle{ color:#c00 !important; }
+      footer{ font-size:16px; }
     }
     @media (max-width:420px){
       .qr{ width:220px; height:220px; }
+      .acc-number{ font-size:20px; }
+      footer{ font-size:16px; }
     }
   </style>
 </head>
@@ -124,17 +146,22 @@
   <div class="wrap">
     <div class="card" role="main" aria-labelledby="pageTitle">
       <h1 id="pageTitle" class="title">Mở ứng dụng ngân hàng → quét mã QR hoặc tải hình về rồi dùng chức năng chuyển tiền bằng ảnh.</h1>
-      <p class="subtitle">TỔI THÀNH NGÂN HÀNG TECHCOMBANK</p>
+      <p class="subtitle">NGÂN HÀNG TECHCOMBANK</p>
 
       <div class="qr-wrap" aria-hidden="false">
         <!-- Đổi 'qr.png' thành tên file ảnh QR của bạn nếu khác -->
-        <img src="qr.png" alt="Mã QR ngân hàng TECHCOMBANK của VÕ THỊ MỸ NGAN" class="qr" id="qrImage" />
+        <img src="qr.png" alt="Mã QR ngân hàng TECHCOMBANK của VÕ THỊ MỸ NGÂN" class="qr" id="qrImage" />
       </div>
 
       <!-- Tên người nhận -->
-      <div class="pay-name" id="recipientName">VÕ THỊ MỸ NGAN</div>
-      <!-- Ngân hàng / Số tài khoản -->
-      <div class="small" id="accountNote">TECHCOMBANK • <span id="accountNumber">85999999938</span></div>
+      <div class="pay-name" id="recipientName">VÕ THỊ MỸ NGÂN</div>
+
+      <!-- Dòng 1: tên ngân hàng (đỏ) -->
+      <div class="bank" id="bankName">TECHCOMBANK</div>
+      <!-- Dòng 2: số tài khoản (to, nổi) -->
+      <div class="acc-number" id="accountNumber">85999999938</div>
+
+      <div class="hint">Bấm “Sao chép số” rồi dán vào ứng dụng ngân hàng nếu cần.</div>
 
       <div class="actions">
         <a class="btn" id="downloadBtn" href="qr.png" download="qr.png">Tải ảnh QR</a>
@@ -142,12 +169,12 @@
         <button class="btn primary" id="printBtn" title="In mã QR">In / Xuất</button>
       </div>
 
-      <footer>QR Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em &lt;3</footer>
+      <footer>Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em</footer>
     </div>
   </div>
 
   <script>
-    // Nút sao chép: copy đúng số tài khoản 85999999938
+    // Nút sao chép: copy đúng số tài khoản
     document.getElementById('copyAccBtn').addEventListener('click', function(){
       const acc = document.getElementById('accountNumber').textContent.trim();
       navigator.clipboard?.writeText(acc).then(()=> {
@@ -174,7 +201,7 @@
       img.alt = 'Không tải được ảnh QR. Hãy kiểm tra tên file hoặc URL.';
       img.src = '';
       img.style.border = '2px dashed rgba(0,0,0,0.08)';
-      img.insertAdjacentHTML('afterend', '<div class="small" style="margin-top:10px;color:#f97316">Không tìm thấy ảnh QR (qr.png). Hãy upload file hoặc sửa đường dẫn.</div>');
+      img.insertAdjacentHTML('afterend', '<div class="hint" style="margin-top:10px;color:#f97316">Không tìm thấy ảnh QR (qr.png). Hãy upload file hoặc sửa đường dẫn.</div>');
       document.getElementById('downloadBtn').style.display = 'none';
     });
   </script>
