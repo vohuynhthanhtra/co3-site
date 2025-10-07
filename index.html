@@ -4,10 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Thanh toán - co3.site</title>
-  <meta name="description" content="Ảnh QR ngân hàng để thanh toán - co3.site" />
+  <meta name="description" content="QR Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em <3" />
   <style>
     :root{
-      --bg:#0f1724; /* dark background */
+      --bg:#0f1724;
       --card:#0b1220;
       --text:#e6eef8;
       --muted:#9fb0c8;
@@ -65,15 +65,17 @@
       max-width:85%;
       object-fit:contain;
       border-radius:8px;
-      background: #fff;
+      background:#fff;
       padding:8px;
       box-sizing:border-box;
     }
     .pay-name{
       margin-top:18px;
-      font-weight:600;
+      font-weight:700;
       font-size:16px;
       color:var(--text);
+      letter-spacing:0.3px;
+      text-transform:uppercase;
     }
     .small{
       margin-top:6px;
@@ -108,15 +110,11 @@
       color:var(--muted);
       font-size:12px;
     }
-
-    /* print friendly: only QR and name */
     @media print{
       body{ background:white; color:black; }
       .card{ box-shadow:none; border:none; }
       footer, .subtitle, .actions, .title{ display:none; }
     }
-
-    /* small screens adjust */
     @media (max-width:420px){
       .qr{ width:220px; height:220px; }
     }
@@ -125,44 +123,46 @@
 <body>
   <div class="wrap">
     <div class="card" role="main" aria-labelledby="pageTitle">
-      <h1 id="pageTitle" class="title">Quét QR để chuyển tiền</h1>
-      <p class="subtitle">Mở ứng dụng ngân hàng -> quét mã QR hoặc tải hình về rồi dùng chức năng chuyển tiền bằng ảnh.</p>
+      <h1 id="pageTitle" class="title">Mở ứng dụng ngân hàng → quét mã QR hoặc tải hình về rồi dùng chức năng chuyển tiền bằng ảnh.</h1>
+      <p class="subtitle">TỔI THÀNH NGÂN HÀNG TECHCOMBANK</p>
 
       <div class="qr-wrap" aria-hidden="false">
-        <!-- Thay 'qr.png' bằng tên file ảnh hoặc URL ảnh QR của bạn -->
-        <img src="qr.png" alt="Mã QR ngân hàng của NGƯỜI NHẬN" class="qr" id="qrImage" />
+        <!-- Đổi 'qr.png' thành tên file ảnh QR của bạn nếu khác -->
+        <img src="qr.png" alt="Mã QR ngân hàng TECHCOMBANK của VÕ THỊ MỸ NGAN" class="qr" id="qrImage" />
       </div>
 
-      <!-- Tên người nhận hiển thị ở đây -->
-      <div class="pay-name" id="recipientName">NGƯỜI NHẬN</div>
-      <div class="small" id="accountNote">Ngân hàng / Số tài khoản (nếu muốn hiển thị thêm)</div>
+      <!-- Tên người nhận -->
+      <div class="pay-name" id="recipientName">VÕ THỊ MỸ NGAN</div>
+      <!-- Ngân hàng / Số tài khoản -->
+      <div class="small" id="accountNote">TECHCOMBANK • <span id="accountNumber">85999999938</span></div>
 
       <div class="actions">
         <a class="btn" id="downloadBtn" href="qr.png" download="qr.png">Tải ảnh QR</a>
-        <button class="btn" id="copyNameBtn" title="Sao chép tên người nhận">Sao chép tên</button>
+        <button class="btn" id="copyAccBtn" title="Sao chép số tài khoản">Sao chép số</button>
         <button class="btn primary" id="printBtn" title="In mã QR">In / Xuất</button>
       </div>
 
-      <footer>co3.site — Trang hiển thị mã QR đơn giản.</footer>
+      <footer>QR Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em &lt;3</footer>
     </div>
   </div>
 
   <script>
-    // JS nhỏ: copy tên, in, fallback nếu ảnh không tồn tại
-    document.getElementById('copyNameBtn').addEventListener('click', function(){
-      const name = document.getElementById('recipientName').textContent.trim();
-      navigator.clipboard?.writeText(name).then(()=> {
-        alert('Đã sao chép: ' + name);
+    // Nút sao chép: copy đúng số tài khoản 85999999938
+    document.getElementById('copyAccBtn').addEventListener('click', function(){
+      const acc = document.getElementById('accountNumber').textContent.trim();
+      navigator.clipboard?.writeText(acc).then(()=> {
+        alert('Đã sao chép số tài khoản: ' + acc);
       }).catch(()=> {
-        prompt('Sao chép tên thủ công:', name);
+        prompt('Sao chép số tài khoản thủ công:', acc);
       });
     });
 
+    // In / Xuất
     document.getElementById('printBtn').addEventListener('click', function(){
       window.print();
     });
 
-    // nếu ảnh chưa load, hiển thị placeholder
+    // Fallback nếu ảnh QR không tồn tại
     const img = document.getElementById('qrImage');
     img.addEventListener('error', function(){
       img.style.background = '#f3f4f6';
