@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Thanh toán - co3.site</title>
+  <title>QR Ủng Hộ • co3.site</title>
   <meta name="description" content="Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em" />
   <style>
     :root{
@@ -12,14 +12,15 @@
       --text:#e6eef8;
       --muted:#9fb0c8;
       --accent:#2dd4bf;
-      --red:#ef4444; /* đỏ đẹp, dễ đọc */
-      --maxw:420px;
+      --maxw:460px;
     }
+    *{box-sizing:border-box}
     html,body{
       height:100%;
       margin:0;
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      background: linear-gradient(180deg, #071028 0%, var(--bg) 100%);
+      background: radial-gradient(1200px 600px at 50% -10%, rgba(45,212,191,.15), transparent 40%),
+                  linear-gradient(180deg, #071028 0%, var(--bg) 100%);
       color:var(--text);
     }
     .wrap{
@@ -28,137 +29,118 @@
       align-items:center;
       justify-content:center;
       padding:28px;
-      box-sizing:border-box;
     }
     .card{
       width:100%;
       max-width:var(--maxw);
-      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
-      border:1px solid rgba(255,255,255,0.04);
-      border-radius:14px;
-      padding:28px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015));
+      border:1px solid rgba(255,255,255,0.06);
+      border-radius:16px;
+      padding:24px 22px 20px;
       text-align:center;
-      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+      box-shadow: 0 12px 36px rgba(2,6,23,0.55);
+      backdrop-filter: blur(3px);
     }
-    .title{
-      font-size:18px;
-      margin:0 0 14px;
-      color:var(--text);
-      letter-spacing:0.2px;
+
+    /* Ảnh header thay cho chữ "NGÂN HÀNG TECHCOMBANK" */
+    .header-img{
+      display:flex; align-items:center; justify-content:center;
+      margin:-4px 0 12px;
     }
-    .subtitle{
-      margin:0 0 18px;
-      font-size:14px;
-      color:var(--red);
-      font-weight:800;
-      letter-spacing:0.3px;
-      text-transform:uppercase;
+    .header-img img{
+      height:44px; width:auto; max-width:90%;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
     }
+
     .qr-wrap{
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-      padding:18px;
-      border-radius:12px;
-      border:1px solid rgba(255,255,255,0.03);
+      display:flex; align-items:center; justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.00));
+      padding:18px; border-radius:12px;
+      border:1px dashed rgba(255,255,255,0.08);
     }
     .qr{
-      width:260px;
-      height:260px;
-      max-width:85%;
-      object-fit:contain;
-      border-radius:8px;
-      background:#fff;
-      padding:8px;
-      box-sizing:border-box;
+      width:260px; height:260px; max-width:85%;
+      object-fit:contain; border-radius:10px;
+      background:#fff; padding:8px;
+      box-shadow: 0 6px 18px rgba(0,0,0,.35);
     }
+
     .pay-name{
-      margin-top:18px;
-      font-weight:800;
-      font-size:16px;
-      letter-spacing:0.4px;
-      text-transform:uppercase;
+      margin-top:16px;
+      font-weight:800; font-size:18px;
+      letter-spacing:.4px; text-transform:uppercase;
     }
-    .bank{
-      margin-top:10px;
-      font-weight:800;
-      color:var(--red);
-      letter-spacing:0.3px;
-    }
+    /* BỎ TECHCOMBANK Ở GIỮA — chỉ để số tài khoản nổi bật */
     .acc-number{
-      margin-top:4px;
-      font-size:22px;
-      font-weight:900;
-      letter-spacing:0.5px;
-      color:#ffffff;
-      text-shadow: 0 1px 0 rgba(0,0,0,0.35);
+      margin-top:6px;
+      font-size:24px; font-weight:900; letter-spacing:.6px;
+      color:#ffffff; text-shadow:0 1px 0 rgba(0,0,0,.35);
     }
     .hint{
-      margin-top:8px;
-      color:var(--muted);
-      font-size:12px;
+      margin-top:8px; color:var(--muted); font-size:12px;
     }
+
     .actions{
-      display:flex;
-      gap:8px;
-      justify-content:center;
-      margin-top:18px;
-      flex-wrap:wrap;
+      display:flex; gap:8px; justify-content:center; margin-top:16px; flex-wrap:wrap;
     }
     .btn{
-      padding:10px 14px;
-      border-radius:10px;
-      border:0;
-      cursor:pointer;
-      font-weight:700;
-      background:rgba(255,255,255,0.06);
-      color:var(--text);
-      transition:all .15s ease;
-      box-shadow: 0 2px 0 rgba(0,0,0,0.3) inset;
+      padding:10px 14px; border-radius:10px; border:0; cursor:pointer;
+      font-weight:700; background:rgba(255,255,255,0.06); color:var(--text);
+      transition:transform .15s ease, box-shadow .15s ease;
+      box-shadow: 0 2px 0 rgba(0,0,0,.35) inset;
     }
     .btn:hover{ transform:translateY(-3px); }
     .btn.primary{
-      background:linear-gradient(90deg,var(--accent), #06b6d4 100%);
-      color:#072126;
+      background:linear-gradient(90deg, var(--accent), #06b6d4 100%); color:#072126;
     }
-    footer{
-      margin-top:20px;
-      font-size:18px;            /* ghi lớn theo yêu cầu */
-      font-weight:800;
-      color:#e9f0fb;
+
+    /* Footer gradient đẹp + nhấn mạnh */
+    .brandline{
+      margin-top:20px; font-size:20px; font-weight:900; line-height:1.2;
+      background: linear-gradient(90deg,#f97316,#f43f5e,#8b5cf6,#22d3ee,#10b981);
+      background-size: 200% 100%;
+      -webkit-background-clip:text; background-clip:text;
+      color: transparent;
+      animation: flow 6s linear infinite;
+      text-shadow: 0 8px 24px rgba(16,185,129,.25);
+      letter-spacing:.3px;
     }
+    @keyframes flow{
+      0%{background-position:0% 50%}
+      100%{background-position:200% 50%}
+    }
+
     @media print{
       body{ background:white; color:black; }
       .card{ box-shadow:none; border:none; }
-      .actions, .title{ display:none; }
-      .subtitle{ color:#c00 !important; }
-      footer{ font-size:16px; }
+      .actions{ display:none; }
+      .brandline{ -webkit-text-fill-color:black; color:black; background:none; text-shadow:none; }
     }
-    @media (max-width:420px){
+    @media (max-width:480px){
       .qr{ width:220px; height:220px; }
-      .acc-number{ font-size:20px; }
-      footer{ font-size:16px; }
+      .acc-number{ font-size:22px; }
+      .brandline{ font-size:18px; }
     }
   </style>
 </head>
 <body>
   <div class="wrap">
-    <div class="card" role="main" aria-labelledby="pageTitle">
-      <h1 id="pageTitle" class="title">Mở ứng dụng ngân hàng → quét mã QR hoặc tải hình về rồi dùng chức năng chuyển tiền bằng ảnh.</h1>
-      <p class="subtitle">NGÂN HÀNG TECHCOMBANK</p>
+    <div class="card" role="main" aria-label="QR chuyển khoản ủng hộ Cô 3 Bolero">
+      <!-- Ảnh header thay cho dòng 'NGÂN HÀNG TECHCOMBANK' -->
+      <div class="header-img">
+        <!-- Đặt file qr1.png (logo hoặc banner Techcombank) cùng thư mục -->
+        <img src="qr1.png" alt="TECHCOMBANK" id="bankHeader">
+      </div>
 
-      <div class="qr-wrap" aria-hidden="false">
-        <!-- Đổi 'qr.png' thành tên file ảnh QR của bạn nếu khác -->
-        <img src="qr.png" alt="Mã QR ngân hàng TECHCOMBANK của VÕ THỊ MỸ NGÂN" class="qr" id="qrImage" />
+      <!-- QR chính -->
+      <div class="qr-wrap">
+        <!-- Đặt file qr.png là mã QR chuyển khoản -->
+        <img src="qr.png" alt="Mã QR chuyển khoản của VÕ THỊ MỸ NGÂN" class="qr" id="qrImage" />
       </div>
 
       <!-- Tên người nhận -->
       <div class="pay-name" id="recipientName">VÕ THỊ MỸ NGÂN</div>
-
-      <!-- Dòng 1: tên ngân hàng (đỏ) -->
-      <div class="bank" id="bankName">TECHCOMBANK</div>
-      <!-- Dòng 2: số tài khoản (to, nổi) -->
+      <!-- SỐ TÀI KHOẢN (đã bỏ chữ TECHCOMBANK ở giữa theo yêu cầu) -->
       <div class="acc-number" id="accountNumber">85999999938</div>
 
       <div class="hint">Bấm “Sao chép số” rồi dán vào ứng dụng ngân hàng nếu cần.</div>
@@ -169,12 +151,12 @@
         <button class="btn primary" id="printBtn" title="In mã QR">In / Xuất</button>
       </div>
 
-      <footer>Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em</footer>
+      <div class="brandline">Cô 3 Bolero , Cám ơn quý anh/chị ủng hộ em</div>
     </div>
   </div>
 
   <script>
-    // Nút sao chép: copy đúng số tài khoản
+    // Sao chép số tài khoản
     document.getElementById('copyAccBtn').addEventListener('click', function(){
       const acc = document.getElementById('accountNumber').textContent.trim();
       navigator.clipboard?.writeText(acc).then(()=> {
@@ -201,8 +183,16 @@
       img.alt = 'Không tải được ảnh QR. Hãy kiểm tra tên file hoặc URL.';
       img.src = '';
       img.style.border = '2px dashed rgba(0,0,0,0.08)';
-      img.insertAdjacentHTML('afterend', '<div class="hint" style="margin-top:10px;color:#f97316">Không tìm thấy ảnh QR (qr.png). Hãy upload file hoặc sửa đường dẫn.</div>');
       document.getElementById('downloadBtn').style.display = 'none';
+    });
+
+    // Fallback ảnh header nếu thiếu qr1.png
+    const headerImg = document.getElementById('bankHeader');
+    headerImg.addEventListener('error', function(){
+      headerImg.replaceWith(Object.assign(document.createElement('div'), {
+        className: 'hint',
+        innerText: 'Không tìm thấy ảnh header (qr1.png). Hãy upload file hoặc sửa đường dẫn.'
+      }));
     });
   </script>
 </body>
