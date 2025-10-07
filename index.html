@@ -1,0 +1,182 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Thanh toán - co3.site</title>
+  <meta name="description" content="Ảnh QR ngân hàng để thanh toán - co3.site" />
+  <style>
+    :root{
+      --bg:#0f1724; /* dark background */
+      --card:#0b1220;
+      --text:#e6eef8;
+      --muted:#9fb0c8;
+      --accent:#2dd4bf;
+      --maxw:420px;
+    }
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background: linear-gradient(180deg, #071028 0%, var(--bg) 100%);
+      color:var(--text);
+    }
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+      box-sizing:border-box;
+    }
+    .card{
+      width:100%;
+      max-width:var(--maxw);
+      background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+      border:1px solid rgba(255,255,255,0.04);
+      border-radius:14px;
+      padding:28px;
+      text-align:center;
+      box-shadow: 0 10px 30px rgba(2,6,23,0.6);
+    }
+    .title{
+      font-size:18px;
+      margin:0 0 18px;
+      color:var(--text);
+      letter-spacing:0.2px;
+    }
+    .subtitle{
+      color:var(--muted);
+      font-size:13px;
+      margin:0 0 18px;
+    }
+    .qr-wrap{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background: linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
+      padding:18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.03);
+    }
+    .qr{
+      width:260px;
+      height:260px;
+      max-width:85%;
+      object-fit:contain;
+      border-radius:8px;
+      background: #fff;
+      padding:8px;
+      box-sizing:border-box;
+    }
+    .pay-name{
+      margin-top:18px;
+      font-weight:600;
+      font-size:16px;
+      color:var(--text);
+    }
+    .small{
+      margin-top:6px;
+      color:var(--muted);
+      font-size:13px;
+    }
+    .actions{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      margin-top:18px;
+      flex-wrap:wrap;
+    }
+    .btn{
+      padding:10px 14px;
+      border-radius:10px;
+      border:0;
+      cursor:pointer;
+      font-weight:600;
+      background:rgba(255,255,255,0.03);
+      color:var(--text);
+      transition:all .15s ease;
+      box-shadow: 0 2px 0 rgba(0,0,0,0.3) inset;
+    }
+    .btn:hover{ transform:translateY(-3px); }
+    .btn.primary{
+      background:linear-gradient(90deg,var(--accent), #06b6d4 100%);
+      color:#072126;
+    }
+    footer{
+      margin-top:18px;
+      color:var(--muted);
+      font-size:12px;
+    }
+
+    /* print friendly: only QR and name */
+    @media print{
+      body{ background:white; color:black; }
+      .card{ box-shadow:none; border:none; }
+      footer, .subtitle, .actions, .title{ display:none; }
+    }
+
+    /* small screens adjust */
+    @media (max-width:420px){
+      .qr{ width:220px; height:220px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="card" role="main" aria-labelledby="pageTitle">
+      <h1 id="pageTitle" class="title">Quét QR để chuyển tiền</h1>
+      <p class="subtitle">Mở ứng dụng ngân hàng -> quét mã QR hoặc tải hình về rồi dùng chức năng chuyển tiền bằng ảnh.</p>
+
+      <div class="qr-wrap" aria-hidden="false">
+        <!-- Thay 'qr.png' bằng tên file ảnh hoặc URL ảnh QR của bạn -->
+        <img src="qr.png" alt="Mã QR ngân hàng của NGƯỜI NHẬN" class="qr" id="qrImage" />
+      </div>
+
+      <!-- Tên người nhận hiển thị ở đây -->
+      <div class="pay-name" id="recipientName">NGƯỜI NHẬN</div>
+      <div class="small" id="accountNote">Ngân hàng / Số tài khoản (nếu muốn hiển thị thêm)</div>
+
+      <div class="actions">
+        <a class="btn" id="downloadBtn" href="qr.png" download="qr.png">Tải ảnh QR</a>
+        <button class="btn" id="copyNameBtn" title="Sao chép tên người nhận">Sao chép tên</button>
+        <button class="btn primary" id="printBtn" title="In mã QR">In / Xuất</button>
+      </div>
+
+      <footer>co3.site — Trang hiển thị mã QR đơn giản.</footer>
+    </div>
+  </div>
+
+  <script>
+    // JS nhỏ: copy tên, in, fallback nếu ảnh không tồn tại
+    document.getElementById('copyNameBtn').addEventListener('click', function(){
+      const name = document.getElementById('recipientName').textContent.trim();
+      navigator.clipboard?.writeText(name).then(()=> {
+        alert('Đã sao chép: ' + name);
+      }).catch(()=> {
+        prompt('Sao chép tên thủ công:', name);
+      });
+    });
+
+    document.getElementById('printBtn').addEventListener('click', function(){
+      window.print();
+    });
+
+    // nếu ảnh chưa load, hiển thị placeholder
+    const img = document.getElementById('qrImage');
+    img.addEventListener('error', function(){
+      img.style.background = '#f3f4f6';
+      img.style.width = '200px';
+      img.style.height = '200px';
+      img.style.display = 'flex';
+      img.style.alignItems = 'center';
+      img.style.justifyContent = 'center';
+      img.alt = 'Không tải được ảnh QR. Hãy kiểm tra tên file hoặc URL.';
+      img.src = '';
+      img.style.border = '2px dashed rgba(0,0,0,0.08)';
+      img.insertAdjacentHTML('afterend', '<div class="small" style="margin-top:10px;color:#f97316">Không tìm thấy ảnh QR (qr.png). Hãy upload file hoặc sửa đường dẫn.</div>');
+      document.getElementById('downloadBtn').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
